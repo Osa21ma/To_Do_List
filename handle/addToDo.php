@@ -3,6 +3,7 @@
 use Classes\Session;
 
 require_once '../App.php';
+require_once '../inc/connection.php';
 
 if($request->check($request->post('submit'))){
 
@@ -17,7 +18,17 @@ if($request->check($request->post('submit'))){
         $request->redirect("../index.php");
 
     }else {
+        $result = $conn->prepare("Insert into todo(`title`) values(:title)");
+        $result->bindParam(":title",$title,PDO::PARAM_STR);
+        $out = $result->execute();
 
+        if($out){
+            Session::set("success","title create");
+            $request->redirect("../index.php");
+        }else{
+             Session::set("errors",["error while insert"]);
+             $request->redirect("../index.php");
+        }
 
     }
 
