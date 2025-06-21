@@ -1,4 +1,6 @@
 <?php 
+
+use Classes\Session;
 require_once 'inc/header.php';
 require_once 'inc/connection.php';
 ?>
@@ -9,6 +11,19 @@ require_once 'inc/connection.php';
                
                 <div class="container mb-5 d-flex justify-content-center">
                     <div class="col-md-4">
+                        <?php
+                        if (Session::get("errors")) {
+                            
+                            foreach(Session::get("errors") as $error) {
+                            
+                            ?>
+
+                            <div class="alert alert-danger"> <?= $error ?></div>
+                        <?php } }
+                        
+                        Session::remove("errors");
+                        
+                        ?>
                         <form action="handle/addToDo.php" method="post">
                         <textarea type="text" class="form-control" rows="3" name="title" id="" placeholder="enter your note here"></textarea>
                         <div class="text-center">

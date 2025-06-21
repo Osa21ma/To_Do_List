@@ -9,14 +9,19 @@ namespace Classes;
     }
 
 
-    public function set($key,$value){
+    public static function  set($key,$value){
         $_SESSION[$key] = $value;
     }
-     public function get($key){
-        return $_SESSION[$key];
+     public static function  get($key){
+        if(isset($_SESSION[$key])){
+
+            return $_SESSION[$key];
+        }else{
+            return false;
+        }
     }
 
-     public function remove($key){
+     public static function  remove($key){
         unset ($_SESSION[$key]);
     }
 
