@@ -136,19 +136,43 @@ require_once 'inc/connection.php';
                 <div class="m-2 py-3">
                     <div class="show-to-do">
 
-                            <div class="item">
-                                <div class="alert-warning text-center ">
-                                 empty to do
-                                </div>
-                            </div>
+                               <?php
                     
-                        <div class="alert alert-warning p-2">
-                                <a href="#" onclick="confirm('are your sure')"  class="remove-to-do text-dark d-flex justify-content-end " ><i class="fa fa-close" style="font-size:16px;"></i></a>                                                                
-                                <h4 >title</h4>
-                               <h5>created_At</h5>
-                               
+                        $result = $conn->query("select * from todo where status='done' order by id desc");
+                        $allnotes = $result->fetchAll(PDO::FETCH_ASSOC);
+                        if(count($allnotes)>0){
+                            
+                            foreach($allnotes as $done){
+                            
+                            ?>
+                            
+                                    <div class="alert alert-warning p-2">
+                                    <a href="handle/delete.php?id=<?=$done['id']?>" onclick="confirm('are your sure')"  class="remove-to-do text-dark d-flex justify-content-end " ><i class="fa fa-close" style="font-size:16px;"></i></a>                                                                
+                                    <h4 ><?=$done['title']?></h4>
+                                    <h5><?=$done['created_at']?></h5>
+                                
                             
                         </div>
+                            
+                       <?php }}else{?>
+
+
+                                <div class="item">
+                                    <div class="alert-warning text-center ">
+                                    empty to do
+                                    </div>
+                                </div>
+
+                        <?php }
+                        
+                        
+                        
+                        ?>
+
+
+                          
+                    
+                    
                     </div>
                 </div>
             </div>
