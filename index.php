@@ -1,5 +1,6 @@
 <?php 
 require_once 'inc/header.php';
+require_once 'inc/connection.php';
 ?>
 <body>
     
@@ -28,22 +29,47 @@ require_once 'inc/header.php';
                 <div class="m-2  py-3">
                     <div class="show-to-do">
 
-                            <div class="item">
-                                <div class="alert-info text-center ">
-                                 empty to do
-                                </div>
-                            </div>
+
+                    <?php 
                     
-                        <div class="alert alert-info p-2">
-                                <h4 >title</h4>
-                                <h5>created_At</h5>
-                                <div class="d-flex justify-content-between mt-3">
-                                    <a href="#"class="btn btn-info p-1 text-white" >edit</a>
+                        $result = $conn->query("select * from todo where status='all' order by id desc");
+                        $allnotes = $result->fetchAll(PDO::FETCH_ASSOC);
+                        if(count($allnotes)>0){
+                            
+                            foreach($allnotes as $all){
+                            
+                            
+                            ?>
+
+                                <div class="alert alert-info p-2">
+                                    <h4 ><?= $all['title'] ?></h4>
+                                    <h5><?= $all['created_at'] ?></h5>
+                                    <div class="d-flex justify-content-between mt-3">
+                                    <a href="edit.php?id=<?= $all['id']?>"class="btn btn-info p-1 text-white" >edit</a>
                                    
                                     <a href="#"class="btn btn-info p-1 text-white" >doing</a>
                                 </div>
                             
                         </div>
+
+                        <?php }}
+                        else{ ?>
+
+
+                                <div class="item">
+                                    <div class="alert-info text-center ">
+                                    empty to do
+                                    </div>
+                                </div>
+                        <?php }
+                    
+                    
+                    
+                    ?>
+
+                          
+                    
+
                     </div>
                 </div>
 
