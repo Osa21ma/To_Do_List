@@ -84,22 +84,46 @@ require_once 'inc/connection.php';
                 <div class="m-2 py-3">
                     <div class="show-to-do">
 
-                   
-                            <div class="item">
-                                <div class="alert-success text-center ">
-                                 empty to do
-                                </div>
-                            </div>
+                    <?php
                     
-                        <div class="alert alert-success p-2">
-                                <h4 >title</h4>
-                                <h5>created_at</h5>
-                                <div class="d-flex justify-content-between mt-3">
+                        $result = $conn->query("select * from todo where status='doing' order by id desc");
+                        $allnotes = $result->fetchAll(PDO::FETCH_ASSOC);
+                        if(count($allnotes)>0){
+                            
+                            foreach ($allnotes as  $doing) {
+                                
+                            
+                            
+                            ?>
+                                 <div class="alert alert-success p-2">
+                                    <h4 ><?=$doing['title']?></h4>
+                                    <h5><?=$doing['created_at']?></h5>
+                                    <div class="d-flex justify-content-between mt-3">
                                     <a></a>
                                     <a href="#"class="btn btn-success p-1 text-white" >Done</a>
                                 </div>
                             
                         </div>
+
+
+
+                        <?php }} else{ ?>
+                                <div class="item">
+                                    <div class="alert-success text-center ">
+                                    empty to do
+                                    </div>
+                                </div>
+
+
+
+                        <?php }
+      
+                    ?>
+
+                   
+                         
+                    
+
                     </div>
                 </div>
             
