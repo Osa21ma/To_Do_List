@@ -1,58 +1,53 @@
 <?php
 
 use Classes\Session;
-
 require_once '../inc/connection.php';
 require_once '../App.php';
 
-if($request->check($request->post("submit")) && $request->check($request->get("id"))){
-
+if ($request->check($request->post("submit")) && $request->check($request->get("id"))) {
     $id = $request->get("id");
     $title = $request->filter($request->post("title"));
 
-    $validation->validate("title",$title,["Required","Str"]);
+    
+    $validation->validate("title", $title, ['Required', 'Str']);
     $errors = $validation->getError();
 
-    if (empty($errors) ) {
 
-            $result = $conn->prepare("select `title` from todo where id=:id");
-            $result->bindParam(":id",$id,PDO::PARAM_INT);
-            $result->execute();
-            $out = $result->fetch(PDO::FETCH_ASSOC);
+    if (empty($errors)) {
+        
+        $query = $conn->prepare("SELECT `title` FROM todo WHERE id = :id");
+        $query->bindParam(":id", $id, PDO::PARAM_INT);
+        $query->execute();
+        $out = $query->fetch(PDO::FETCH_ASSOC);
 
-            if($out){
+        if ($out) { 
+           
+            $updateQuery = $conn->prepare("UPDATE todo SET title = :title WHERE id = :id");
+            $updateQuery->bindParam(":title", $title, PDO::PARAM_STR);
+            $updateQuery->bindParam(":id", $id, PDO::PARAM_INT);
+            $result = $updateQuery->execute();
 
-                //update
-                $result = $conn->prepare("update todo set title=:title where id=:id");
-                $result->bindParam(":title",$title,PDO::PARAM_STR);
-                $result->bindParam(":id",$id,PDO::PARAM_INT);
-                $out = $result->execute();
-
-                if($out){
-                    Session::set("success","title updated successfully");
-                    $request->redirect("../index.php");
-                    exit();
-                }else{
-                    Session::set("errors",["error while updating"]);
-                    $request->redirect("../edit.php?id=$id");
-                    exit();
-                }
-
-            }else{
-                Session::set("errors",["title not found"]);
-                $request->redirect("../index.php");
+            if ($result) {
+                Session::set("success", "Title updated successfully");
+                header("location: ../index.php");
+                exit();
+            } else {
+                Session::set("errors", ["Error while updating"]);
+                header("location: ../edit.php?id=$id");
                 exit();
             }
-    
-    }else{
-
-        Session::set("errors",$errors);
-        $request->redirect("../edit.php?id=$id");
+        } else {
+            Session::set("errors", ["Title not found"]);
+            header("location: ../index.php");
+            exit();
+        }
+    } else {
+        
+        Session::set("errors", $errors);
+        header("location: ../edit.php?id=$id");
         exit();
     }
-
+} else {
+    $request->redirect("../404.php");
 }
-else {
-    $request->redirect("../index.php");
 
-}
