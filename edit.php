@@ -11,7 +11,7 @@ if($request->check($request->get("id"))){
 
     $id = $request->get("id");
 }else{
-        $message = "not found";
+    $request->redirect("../index.php");
 
 }
 
@@ -22,7 +22,8 @@ $title = $result->fetch(PDO::FETCH_ASSOC);
 
 if(! count($title)>0){
 
-    $message = "not found";
+    $request->redirect("../index.php");
+
 }
 
 
@@ -30,7 +31,7 @@ if(! count($title)>0){
 
 
 <body class="container w-50 mt-5">
-    <form action="handle/edit.php?id=" method="post">
+    <form action="handle/edit.php?id=<?= $id ?>" method="post">
             <textarea type="text" class="form-control"  name="title" id="" placeholder="enter your note here"><?= $title['title'] ?></textarea>
             <div class="text-center">
                 <button type="submit" name="submit" class="form-control text-white bg-info mt-3 " >Update</button>
