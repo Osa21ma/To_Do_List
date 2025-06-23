@@ -62,7 +62,7 @@ require_once 'inc/connection.php';
                                     <div class="d-flex justify-content-between mt-3">
                                     <a href="edit.php?id=<?= $all['id']?>"class="btn btn-info p-1 text-white" >edit</a>
                                    
-                                    <a href="#"class="btn btn-info p-1 text-white" >doing</a>
+                                    <a href="handle/goto.php?status=doing&id=<?= $all['id'] ?>"class="btn btn-info p-1 text-white" >doing</a>
                                 </div>
                             
                         </div>
@@ -115,7 +115,7 @@ require_once 'inc/connection.php';
                                     <h5><?=$doing['created_at']?></h5>
                                     <div class="d-flex justify-content-between mt-3">
                                     <a></a>
-                                    <a href="#"class="btn btn-success p-1 text-white" >Done</a>
+                                    <a href="handle/goto.php?status=done&id=<?= $doing['id'] ?>"class="btn btn-success p-1 text-white" >Done</a>
                                 </div>
                             
                         </div>
